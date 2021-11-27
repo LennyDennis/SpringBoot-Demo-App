@@ -1,6 +1,21 @@
 package com.example.demo.school;
 
+
+import javax.persistence.*;
+
+@Entity
+@Table
 public class School {
+    @Id
+    @SequenceGenerator(
+            name = "school_sequence",
+            sequenceName = "school_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "school_sequence"
+    )
     private Integer id;
     private String name;
 
