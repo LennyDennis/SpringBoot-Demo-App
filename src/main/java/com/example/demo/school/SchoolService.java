@@ -3,10 +3,8 @@ package com.example.demo.school;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Service
 public class SchoolService {
@@ -28,5 +26,29 @@ public class SchoolService {
             throw new IllegalStateException("School exists");
         }
         schoolRepository.save(school);
+    }
+
+    public void deleteSchool(Integer schoolId) {
+        boolean schoolExists = schoolRepository.existsById(schoolId);
+        if(schoolExists){
+            schoolRepository.deleteById(schoolId);
+        }else{
+            throw new IllegalStateException("School does not exist");
+        }
+    }
+
+    @Transactional
+    public void updateSchool(Integer schoolId, String name) {
+        School school = schoolRepository.findById(schoolId)
+                .orElseThrow(() -> new IllegalArgumentException("School does not exits"));
+
+        if(name != null && !Objects.equals(name,school.getName())){
+            Optional<School> schoolExists = schoolRepository.getSchoolByName(name);
+            if(schoolExists.isPresent()){
+                throw new IllegalStateException("School exists");
+            }
+            school.setName(name);
+        }
+
     }
 }

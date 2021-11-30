@@ -25,4 +25,14 @@ public class SchoolController {
      public void addSchool(@RequestBody School school){
         schoolService.addSchool(school);
     }
+
+    @DeleteMapping(path = "{schoolId}")
+    public void deleteSchool(@PathVariable("schoolId") Integer schoolId){
+        schoolService.deleteSchool(schoolId);
+    }
+
+    @PutMapping(path = "{schoolId}")
+    public void updateSchool(@PathVariable("schoolId") Integer schoolId,@RequestParam(required = false) String name){
+        schoolService.updateSchool(schoolId,name);
+    }
 }
