@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SchoolService {
@@ -19,5 +20,13 @@ public class SchoolService {
 
     public List<School> getSchool(){
         return schoolRepository.findAll();
+    }
+
+    public void addSchool(School school) {
+        Optional<School> schoolExists = schoolRepository.getSchoolByName(school.getName());
+        if(schoolExists.isPresent()){
+            throw new IllegalStateException("School exists");
+        }
+        schoolRepository.save(school);
     }
 }
